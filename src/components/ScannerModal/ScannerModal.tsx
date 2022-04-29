@@ -38,7 +38,8 @@ function ScannerModal(props: Props) {
         state.handleLoaded(value);
     }, [state.handleLoaded, state]);
 
-    return <Dialog open={state.isOpened}
+    return state.isOpened ? <Scanner onSuccess={handleSuccess} onError={handleError} onLoaded={handleLoad} /> : <div/>
+    /*return <Dialog open={state.isOpened}
                    onClose={handleClose}
                    classes={{paper: classes.root}}
     >
@@ -49,13 +50,13 @@ function ScannerModal(props: Props) {
                 </IconButton>
             </div>
         </DialogTitle>
-        <DialogContent classes={{root: classes.content}}>
+        <DialogContent>
             {!state.isLoaded && <CircularProgress />}
-            {state.isOpened && <div className={classes.scannerWrapper}>
+            {state.isOpened && <div>
                 <Scanner onSuccess={handleSuccess} onError={handleError} onLoaded={handleLoad} />
             </div>}
         </DialogContent>
-    </Dialog>
+    </Dialog>*/
 }
 
 export default observer(ScannerModal);

@@ -1,7 +1,6 @@
 import React from "react";
-import { Html5Qrcode } from 'html5-qrcode';
-import { QrcodeErrorCallback, QrcodeSuccessCallback } from "html5-qrcode/core";
-import { Html5QrcodeSupportedFormats } from "html5-qrcode/esm/core";
+import Quagga, { QuaggaJSResultCallbackFunction } from '@ericblade/quagga2';
+import './quagga.css';
 
 type Props = {
     onSuccess: (text: string) => void,
@@ -17,25 +16,48 @@ function Scanner(props: Props) {
             return;
         }
         onLoaded && onLoaded(false);
-        const handleSuccess: QrcodeSuccessCallback = (text, result) => onSuccess(text);
-        const handleError: QrcodeErrorCallback = (message, error) => {
-            error.type !== 0 && onError(message);
-        }
 
-        const scanner = new Html5Qrcode("code-reader", { verbose: true, formatsToSupport: [Html5QrcodeSupportedFormats.CODE_39]});
-        const start$ = scanner.start({
-            facingMode: { exact: "user" },
-        }, { fps: 10, qrbox: { width: 500, height: 500 } }, handleSuccess, handleError);
-        start$.then(() => onLoaded && onLoaded(true))
+        Quagga.init({
+            locate: true,
+            inputStream : {
+                type : "LiveStream",
+            },
+            decoder : {
+                readers : [
+                    "code_93_reader",
+                    "code_128_reader",
+                    "code_39_reader",
+                    "codabar_reader",
+                    "ean_reader",
+                    "ean_8_reader",
+                    "code_39_vin_reader",
+                ]
+            }
+        }, (e: Error) => {
+            if (e) {
+                onError(e.message);
+                return
+            }
+            onLoaded && onLoaded(true);
+            Quagga.start();
+        });
+
+        const successHandler: QuaggaJSResultCallbackFunction = (data) => {
+            console.log(data);
+            if (data.codeResult.code) {
+                onSuccess(data.codeResult.code);
+            }
+        }
+        Quagga.onDetected(successHandler);
 
         return () => {
-            start$.then(() => {
-                scanner.stop()
-            });
+            Quagga.offDetected(successHandler);
+            Quagga.stop();
         }
-    }, [onLoaded]);
+    }, [onLoaded, onError, onSuccess]);
 
-    return <div id={'code-reader'}/>
+
+    return <div id="interactive" className="viewport"/>
 }
 
 export default React.memo(Scanner);
