@@ -20,11 +20,18 @@ export default ({ breakpoints }: Theme) => createStyles({
     content: {
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         alignItems: 'center',
         padding: 0
     },
     scannerWrapper: {
-        width: `100%`
-    }
+        width: `100%`,
+        overflow: 'hidden',
+    },
+    resultForm: {
+        width: `100%`,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
+    },
 });

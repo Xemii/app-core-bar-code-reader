@@ -24,7 +24,7 @@ function App() {
 
     return (
         <div>
-            <Typography variant={'h2'}>Scanned value: {value}</Typography>
+            <Typography variant={'h6'}>Scanned value: {value}</Typography>
             <Button onClick={handleScan} variant={'contained'} size={'large'}>scan</Button>
             <ScannerModal state={service.state} />
         </div>
