@@ -1,5 +1,5 @@
 import React from "react";
-import Quagga, { QuaggaJSResultCallbackFunction } from '@ericblade/quagga2';
+import Quagga, { QuaggaJSResultCallbackFunction } from '../../lib/quagga';
 import QuaggaCanvas from "../QuaggaCanvas/QuaggaCanvas";
 import { createQuaggaDefaultConfig } from "../../utils/quagga";
 

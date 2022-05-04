@@ -1,8 +1,8 @@
 import React from 'react';
-import Quagga, { QuaggaJSResultCallbackFunction } from "@ericblade/quagga2";
-import styles from './QuaggaCanvas.styles';
 import { makeStyles } from "@material-ui/core";
+import Quagga, { QuaggaJSResultCallbackFunction } from '../../lib/quagga';
 import { getResultDrawingCanvas } from "./utils";
+import styles from './QuaggaCanvas.styles';
 
 const useStyles = makeStyles(styles);
 

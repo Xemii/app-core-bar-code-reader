@@ -1,6 +1,6 @@
 import React, { ChangeEventHandler } from 'react';
 import { observer } from "mobx-react";
-import Quagga, { QuaggaJSResultCallbackFunction } from '@ericblade/quagga2';
+import Quagga, { QuaggaJSResultCallbackFunction } from '../../lib/quagga';
 import QuaggaCanvas from "../QuaggaCanvas/QuaggaCanvas";
 import { createQuaggaDefaultConfig } from "../../utils/quagga";
 
@@ -20,7 +20,6 @@ function FileScanner(props: Props) {
     }, [onLoaded]);
 
     const handleSuccess: QuaggaJSResultCallbackFunction = React.useCallback((data) => {
-        console.log(data);
         if (data.codeResult.code) {
             onSuccess(data.codeResult.code);
         }
@@ -32,19 +31,21 @@ function FileScanner(props: Props) {
     }, [handleSuccess]);
 
     const handleFileChange: ChangeEventHandler<HTMLInputElement> = React.useCallback((e) => {
+        onSuccess('');
+
         if (!e.target.files || !e.target.files.length) {
             return;
         }
-
         Quagga.decodeSingle({
             ...createQuaggaDefaultConfig(),
             inputStream: {
                 singleChannel: false,
-                target: `#${QUAGGA_ELEMENT_ID}`
+                target: `#${QUAGGA_ELEMENT_ID}`,
+                size: 1280
             },
             src: URL.createObjectURL(e.target.files[0]),
         });
-    }, [])
+    }, [onSuccess])
 
     return <div>
         <QuaggaCanvas id={QUAGGA_ELEMENT_ID} />

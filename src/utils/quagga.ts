@@ -1,7 +1,7 @@
 export const createQuaggaDefaultConfig = () => ({
     locator: {
-        patchSize: "large",
-        halfSample: true
+        patchSize: "medium",
+        halfSample: false
     },
     decoder : {
         readers : [
